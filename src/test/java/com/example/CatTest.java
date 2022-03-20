@@ -10,15 +10,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
 
 import static org.junit.Assert.*;
+
 @RunWith(MockitoJUnitRunner.class)
 
 public class CatTest {
 
     @Mock
     Feline feline;
-
-    @Mock
-    Cat cat;
 
     @Test
     public void getSoundTest() {
@@ -27,24 +25,23 @@ public class CatTest {
         Assert.assertEquals("Мяу", responseMeow);
     }
 
+    //переделано на проверку,что метод cat.getFood обращается к feline.eatMeat и возращает значения
     @Test
     public void getFoodTest() throws Exception {
-        Mockito.when(cat.getFood()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
-        Assert.assertEquals(List.of("Животные", "Птицы", "Рыба"), cat.getFood());
+
+        Cat cat = new Cat(feline);
+        Mockito.when(feline.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
+        List<String> listOfFood = cat.getFood();
+        Assert.assertEquals(List.of("Животные", "Птицы", "Рыба"), listOfFood);
 
     }
 
+    //переделано на verify,что метод getFood вызывает метод eatMeat
     @Test
-    public void getFoodIsExceptionTest() throws Exception {
-
-        try {
-            Cat cat = new Cat(feline);
-            cat.getFood();
-
-        } catch (Exception exception) {
-            String exp = String.valueOf(exception);
-            assertEquals(exp, "");
-        }
+    public void getFoodVerifyTest() throws Exception {
+        Cat cat = new Cat(feline);
+        cat.getFood();
+        Mockito.verify(feline,Mockito.times(1)).eatMeat();
     }
 
 }

@@ -18,24 +18,10 @@ public class LionTest {
 
     @Test
     public void getKittensTest() throws Exception {
-
         Lion lion = new Lion("Самец",feline);
         Mockito.when(feline.getKittens()).thenReturn(1);
-        Assert.assertEquals(1,lion.getKittens());
-    }
-
-    @Test
-    public void doesHaveManeIsTrueTest() throws Exception {
-        Lion lion = new Lion("Самец",feline);
-        boolean mane = lion.doesHaveMane();
-        assertEquals(mane,true);
-    }
-
-    @Test
-    public void doesHaveManeIsFalseTest() throws Exception {
-        Lion lion = new Lion("Самка",feline);
-        boolean mane = lion.doesHaveMane();
-        assertEquals(mane,false);
+        int countOfKittens = lion.getKittens();
+        Assert.assertEquals(1,countOfKittens);
     }
 
     @Test
@@ -45,16 +31,17 @@ public class LionTest {
             Lion lion = new Lion("Samka", feline);
 
         } catch (Exception exception) {
-            String exp = String.valueOf(exception);
-            assertEquals(exp, "java.lang.Exception: Используйте допустимые значения пола животного - самей или самка");
+            String exp = exception.getMessage();
+            assertEquals(exp, "Используйте допустимые значения пола животного - самец или самка");
         }
     }
 
+   //переделано на проверку, что метод lion.getFood обращается к feline.getFood и возращает значения
     @Test
     public void getFoodTest() throws Exception {
         Lion lion = new Lion("Самец",feline);
-        Mockito.when(lion.getFood()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
-        Assert.assertEquals(List.of("Животные", "Птицы", "Рыба"),lion.getFood());
+        Mockito.when(feline.getFood("Хищник")).thenReturn(List.of("Животные", "Птицы", "Рыба"));
+        List<String> listOfFood = lion.getFood();
+        Assert.assertEquals(List.of("Животные", "Птицы", "Рыба"),listOfFood);
     }
-
 }
