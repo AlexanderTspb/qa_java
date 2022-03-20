@@ -25,14 +25,15 @@ public class CatTest {
         Assert.assertEquals("Мяу", responseMeow);
     }
 
-    //переделано на проверку,что метод cat.getFood обращается к feline.eatMeat и возращает значения
+    //теперь список создается один раз и сохраняется в переменную listOfFoodExp
     @Test
     public void getFoodTest() throws Exception {
 
         Cat cat = new Cat(feline);
-        Mockito.when(feline.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
-        List<String> listOfFood = cat.getFood();
-        Assert.assertEquals(List.of("Животные", "Птицы", "Рыба"), listOfFood);
+        List<String> listOfFoodExp = List.of("Животные", "Птицы", "Рыба");
+        Mockito.when(feline.eatMeat()).thenReturn(listOfFoodExp);
+        List<String> listOfFoodAct = cat.getFood();
+        Assert.assertEquals(listOfFoodExp, listOfFoodAct);
 
     }
 
