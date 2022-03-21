@@ -33,7 +33,7 @@ public class LionTest {
 
         exceptionRule.expect(java.lang.Exception.class);
         exceptionRule.expectMessage("Используйте допустимые значения пола животного - самец или самка");
-        Lion lion = new Lion("Самец", feline);
+        Lion lion = new Lion("Samka", feline);
 
     }
 
