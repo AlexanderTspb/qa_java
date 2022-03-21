@@ -1,7 +1,9 @@
 package com.example;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -23,24 +25,18 @@ public class LionTest {
         int countOfKittens = lion.getKittens();
         Assert.assertEquals(1,countOfKittens);
     }
-    //добавил дополнительную проверку в блоке finally
-    //таким образом,в случае, если не выкидывается исключение, то все равно выполнится доп проверка и тест упадет
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
     @Test
     public void doesHaveManeIsExceptionTest() throws Exception {
 
-        String isNotException = "exception не был вызван";
-        String isException = "Используйте допустимые значения пола животного - самец или самка";
-        try {
-            Lion lion = new Lion("Samka", feline);
+        exceptionRule.expect(java.lang.Exception.class);
+        exceptionRule.expectMessage("Используйте допустимые значения пола животного - самец или самка");
+        Lion lion = new Lion("Самец", feline);
 
-        } catch (Exception exception) {
-            isNotException = exception.getMessage();
-            assertEquals(isException, isNotException);
-        }
-        finally {
-            assertEquals(isException, isNotException);
-        }
     }
+
 
    //теперь список создается один раз и сохраняется в переменную listOfFoodExp
     @Test

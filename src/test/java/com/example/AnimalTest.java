@@ -1,6 +1,9 @@
 package com.example;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 import static org.junit.Assert.*;
 
 public class AnimalTest {
@@ -11,25 +14,19 @@ public class AnimalTest {
         String family = animal.getFamily();
         assertEquals("Существует несколько семейств: заячьи, беличьи, мышиные, кошачьи, псовые, медвежьи, куньи",family);
     }
-    //добавил дополнительную проверку в блоке finally
-    //таким образом, в случае, если не выкидывается исключение, то все равно выполнится доп проверка и тест упадет
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
     @Test
     public void getFoodIsExceptionTest() throws Exception {
 
-        String isNotException = "exception не был вызван";
-        String isException = "Неизвестный вид животного, используйте значение Травоядное или Хищник";
+        exceptionRule.expect(java.lang.Exception.class);
+        exceptionRule.expectMessage("Неизвестный вид животного, используйте значение Травоядное или Хищник");
+        Animal animal = new Animal();
+        animal.getFood("Всеядное");
 
-        try {
-            Animal animal = new Animal();
-            animal.getFood("Всеядное");
-
-        } catch (Exception exception) {
-            isNotException = exception.getMessage();
-            assertEquals(isException,isNotException);
-        }
-        finally {
-            assertEquals(isException, isNotException);
-        }
     }
+
+
 
 }
